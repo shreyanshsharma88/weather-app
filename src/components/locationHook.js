@@ -7,17 +7,14 @@ export function GetUserLocation() {
     error: null,
   });
   const [weatherData, setWeatherData] = useState();
-  const apiKey = "6LDA7N0xUCOwK6FYPpezlEENrstONQEn";
 
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-        //   console.log(position.coords.latitude);
-        //   console.log(position.coords.longitude);
+        (position) => { 
           setLocation({
-            latitude: Number(position.coords.latitude.toFixed(4)),
-            longitude: Number( position.coords.longitude.toFixed(4)),
+            latitude: Number(position.coords.latitude.toFixed(2)),
+            longitude: Number( position.coords.longitude.toFixed(2)),
             error: null,
           });
         },
@@ -27,20 +24,26 @@ export function GetUserLocation() {
       setLocation({ error: "please set geolocation " });
     }
   }, []);
+  const time = new Date().toLocaleString();
+  const parts = time.split(/[\s,]+/);
+  const [day, month, year] = parts[0].split("/");
+  const [hour] = parts[1].split(":");
 
+
+  const isoDate = `${year}-${month}-${day}T${hour}:00`;
+  console.log(isoDate);
 
 
   useEffect(() => {
     if (location.longitude !== null && location.latitude !== null) {
       const fetchWeather = async () => {
         const res = await fetch(
-          `https://api.tomorrow.io/v4/weather/forecast?location=${location.latitude},${location.longitude}&apikey=${apiKey}`
+          `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,rain,showers`
         );
         
-        console.log(weatherData);
         const jsonData = await res.json();
         if (!res.ok) {
-            throw new Error("Something Went Wrong, contact the");
+            throw new Error("Something Went Wrong, contact the dev");
         } else {
         setWeatherData(jsonData);
         }
@@ -49,5 +52,5 @@ export function GetUserLocation() {
     }
   }, [location]);
 
-  return { location, weatherData };
+  return { location, weatherData, isoDate };
 }
