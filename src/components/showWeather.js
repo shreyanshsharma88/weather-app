@@ -24,16 +24,15 @@ export default function ShowWeather() {
   return (
     <StyledContainer>
       {weatherData ? (
-        <Stack  className="content-container">
+        <Stack className="content-container">
           <Stack className="weather-container">
-            <Typography variant="h2"> here comes weather</Typography>
+            <Box className="background-image">
+              <Lottie animationData={dayAnimation} />
+            </Box>
+            <Stack className="weather-content">
+              <Typography variant="h4"> here comes weather</Typography>
+            </Stack>
           </Stack>
-
-            <Lottie style={{  height:'500px', width:'300px' }} animationData={dayAnimation} />
-            <Stack className="weather-container">
-            <Typography variant="h2"> here comes search</Typography>
-          </Stack>
-          
         </Stack>
       ) : (
         <CircularProgress color="info" />
@@ -50,26 +49,32 @@ const StyledContainer = styled(Box)(({ theme }) => ({
   backgroundImage:
     "linear-gradient( 76.3deg,  rgba(44,62,78,1) 12.6%, rgba(69,103,131,1) 82.8% )",
   ".content-container": {
-    width: "100%",
     display: "flex",
     flexDirection: "row",
-    [theme.breakpoints.down('md')]:{
-      flexDirection:'column'
-
-    },
-    justifyContent:'center',
-    alignItems: "center",
-    '.weather-container':{
-      width:'300px',
-      height:'500px',
-      backgroundColor:theme.palette.common.white,
-      borderRadius:theme.spacing(3),
-      boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'
-
-    },
-    ".lottie-container": {
-      height: "15%",
-      width: "15%",
+    justifyContent: "center",
+    ".weather-container": {
+      borderRadius: theme.spacing(3),
+      position: "relative",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      ".background-image": {
+        position: "absolute",
+        opacity: 0.8,
+        objectFit: "contain",
+        borderRadius: "20px",
+        overflow: "hidden",
+        width:400,
+        [theme.breakpoints.down('sm')]:{
+          width:'100%'
+        }
+      },
+      ".weather-content": {
+        // boxShadow:' rgba(0, 0, 0, 0.4) 0px 30px 90px',
+        width:'100%',
+        zIndex: 1,
+        color: theme.palette.common.white,
+      },
     },
   },
 }));
