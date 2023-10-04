@@ -1,8 +1,7 @@
 import {
   Box,
   CircularProgress,
-  Grid,
-  Stack,
+   Stack,
   styled,
   Typography,
 } from "@mui/material";
@@ -26,9 +25,9 @@ export default function ShowWeather() {
       {weatherData ? (
         <Stack className="content-container">
           <Stack className="weather-container">
-            <Box className="background-image">
-              <Lottie animationData={dayAnimation} />
-            </Box>
+            {/* <Box className="background-image"> */}
+              <Lottie className="background-image" animationData={dayAnimation} />
+            {/* </Box> */}
             <Stack className="weather-content">
               <Typography variant="h4"> here comes weather</Typography>
             </Stack>
@@ -52,25 +51,30 @@ const StyledContainer = styled(Box)(({ theme }) => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
+    width:'90%',
     ".weather-container": {
       borderRadius: theme.spacing(3),
       position: "relative",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+      width:'50%',
+      [theme.breakpoints.down('md')]:{
+        width:'100%',
+      },
+      overflow:'hidden',
       ".background-image": {
         position: "absolute",
         opacity: 0.8,
         objectFit: "contain",
         borderRadius: "20px",
         overflow: "hidden",
-        width:400,
+        flex:1,
         [theme.breakpoints.down('sm')]:{
           width:'100%'
         }
       },
       ".weather-content": {
-        // boxShadow:' rgba(0, 0, 0, 0.4) 0px 30px 90px',
         width:'100%',
         zIndex: 1,
         color: theme.palette.common.white,

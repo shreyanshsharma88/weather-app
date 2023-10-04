@@ -63,7 +63,7 @@ export function GetUserLocation() {
       };
       fetchWeather();
     }
-  }, [location]);
+  }, [location, testing]);
 
   return { location, weatherData, isoDate };
 }
