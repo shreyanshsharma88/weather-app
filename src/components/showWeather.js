@@ -1,12 +1,12 @@
 import {
   Box,
   CircularProgress,
-   Stack,
+  Stack,
   styled,
   Typography,
 } from "@mui/material";
 import Lottie from "lottie-react";
-import React from "react";
+import React, { useState } from "react";
 import { GetUserLocation } from "./locationHook";
 import animationData from "./lottie/Animation - sunny.json";
 import dayAnimation from "./lottie/animation_day.json";
@@ -19,17 +19,37 @@ export default function ShowWeather() {
     const data = Object.entries(weatherData);
     console.log(data);
   }
-
+  const [time, setTime] = useState({
+    time: new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      date: new Date().toLocaleDateString(),
+    }),
+  });
+  setInterval(() => {
+    setTime({
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      date: new Date().toLocaleDateString(),
+    });
+  }, 1000);
   return (
     <StyledContainer>
       {weatherData ? (
         <Stack className="content-container">
           <Stack className="weather-container">
-            {/* <Box className="background-image"> */}
-              <Lottie className="background-image" animationData={dayAnimation} />
-            {/* </Box> */}
+            <Lottie className="background-image" animationData={dayAnimation} />
             <Stack className="weather-content">
-              <Typography variant="h4"> here comes weather</Typography>
+              <Stack className="header-container" direction="row">
+                <Typography padding={3} variant="h5">
+                  {time?.date}
+                </Typography>
+                <Typography padding={3} variant="h5">
+                  {time?.time}
+                </Typography>
+              </Stack>
             </Stack>
           </Stack>
         </Stack>
@@ -41,6 +61,7 @@ export default function ShowWeather() {
 }
 
 const StyledContainer = styled(Box)(({ theme }) => ({
+  // fontFamily:'Dosis, sans-serif',
   padding: theme.spacing(3),
   display: "flex",
   justifyContent: "center",
@@ -51,33 +72,43 @@ const StyledContainer = styled(Box)(({ theme }) => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-    width:'90%',
+    width: "90%",
     ".weather-container": {
       borderRadius: theme.spacing(3),
       position: "relative",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      width:'50%',
-      [theme.breakpoints.down('md')]:{
-        width:'100%',
+      width: "40%",
+      [theme.breakpoints.down("md")]: {
+        width: "100%",
       },
-      overflow:'hidden',
+      overflow: "hidden",
       ".background-image": {
         position: "absolute",
         opacity: 0.8,
         objectFit: "contain",
         borderRadius: "20px",
         overflow: "hidden",
-        flex:1,
-        [theme.breakpoints.down('sm')]:{
-          width:'100%'
-        }
+        flex: 1,
+        [theme.breakpoints.down("sm")]: {
+          width: "100%",
+        },
       },
       ".weather-content": {
-        width:'100%',
+        width: "100%",
         zIndex: 1,
         color: theme.palette.common.white,
+        ".header-container": {
+          width: "100%",
+          justifyContent: "space-between",
+          backgroundColor: theme.palette.common.black,
+          opacity: 0.5,
+          position: "absolute",
+          top: 0,
+          height: theme.spacing(7),
+          alignItems: "center",
+        },
       },
     },
   },
