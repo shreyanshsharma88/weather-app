@@ -3,52 +3,52 @@ import {
   CircularProgress,
   Stack,
   styled,
-  Typography,
+  Typography
 } from "@mui/material";
 import Lottie from "lottie-react";
-import React, { useState } from "react";
+import React from "react";
 import { GetUserLocation } from "./locationHook";
-import animationData from "./lottie/Animation - sunny.json";
 import dayAnimation from "./lottie/animation_day.json";
+import eveningAnimation from "./lottie/animation_evening.json";
+import nightAnimation from "./lottie/animation_night.json";
+import sunnyWeather from './lottie/Animation - sunny.json'
 
 export default function ShowWeather() {
-  const { weatherData } = GetUserLocation();
-  if (weatherData) {
-    // const { main } = weatherData;
+  const { weatherData, dateTime} = GetUserLocation();
+    
+  
+  // console.log(dateTime.timesOfDay)
 
-    const data = Object.entries(weatherData);
-    console.log(data);
-  }
-  const [time, setTime] = useState({
-    time: new Date().toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      date: new Date().toLocaleDateString(),
-    }),
-  });
-  setInterval(() => {
-    setTime({
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-      date: new Date().toLocaleDateString(),
-    });
-  }, 1000);
   return (
     <StyledContainer>
       {weatherData ? (
         <Stack className="content-container">
           <Stack className="weather-container">
-            <Lottie className="background-image" animationData={dayAnimation} />
+            <Lottie 
+              className="background-image"
+              animationData={
+                dateTime?.timesOfDay === "Morning"
+                  ? dayAnimation
+                  : dateTime?.timesOfDay === "Evening"
+                  ? eveningAnimation
+                  : nightAnimation
+              }
+            />
             <Stack className="weather-content">
               <Stack className="header-container" direction="row">
-                <Typography padding={3} variant="h5">
-                  {time?.date}
+                <Typography padding={3} variant="h5" fontWeight={900}>
+                  {dateTime?.date}
                 </Typography>
-                <Typography padding={3} variant="h5">
-                  {time?.time}
+                <Typography padding={3} variant="h5" fontWeight={900}>
+                  {dateTime?.time}
                 </Typography>
+              </Stack>
+
+              <Stack  className="temps">
+
+                <Typography variant='h1'>12</Typography>
+                <Lottie className="weather-icon" animationData={sunnyWeather}/>
+
               </Stack>
             </Stack>
           </Stack>
@@ -65,6 +65,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
   display: "flex",
   justifyContent: "center",
+  alignItems: "center",
   height: "95vh",
   backgroundImage:
     "linear-gradient( 76.3deg,  rgba(44,62,78,1) 12.6%, rgba(69,103,131,1) 82.8% )",
@@ -72,14 +73,15 @@ const StyledContainer = styled(Box)(({ theme }) => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-    width: "90%",
+    width: "100%",
+    height: "90%",
     ".weather-container": {
       borderRadius: theme.spacing(3),
       position: "relative",
       display: "flex",
-      justifyContent: "center",
+      justifyContent: "space-between",
       alignItems: "center",
-      width: "40%",
+      width: 600,
       [theme.breakpoints.down("md")]: {
         width: "100%",
       },
@@ -104,11 +106,21 @@ const StyledContainer = styled(Box)(({ theme }) => ({
           justifyContent: "space-between",
           backgroundColor: theme.palette.common.black,
           opacity: 0.5,
-          position: "absolute",
-          top: 0,
-          height: theme.spacing(7),
+          height: theme.spacing(8),
           alignItems: "center",
         },
+        '.temps':{
+          display:'flex',
+          flexDirection:'row',
+          justifyContent:'space-between',
+          alignItems:'center',
+          height:theme.spacing(20),
+          padding:theme.spacing(3),
+          '.weather-icon':{
+            height:'100%',
+            
+          }
+        }
       },
     },
   },
