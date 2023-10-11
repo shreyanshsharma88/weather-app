@@ -3,7 +3,7 @@ import {
   CircularProgress,
   Stack,
   styled,
-  Typography
+  Typography,
 } from "@mui/material";
 import Lottie from "lottie-react";
 import React from "react";
@@ -11,20 +11,17 @@ import { GetUserLocation } from "./locationHook";
 import dayAnimation from "./lottie/animation_day.json";
 import eveningAnimation from "./lottie/animation_evening.json";
 import nightAnimation from "./lottie/animation_night.json";
-import sunnyWeather from './lottie/Animation - sunny.json'
+import sunnyWeather from "./lottie/Animation - sunny.json";
 
 export default function ShowWeather() {
-  const { weatherData, dateTime} = GetUserLocation();
-    
-  
-  // console.log(dateTime.timesOfDay)
+  const { weatherData, dateTime } = GetUserLocation();
 
   return (
     <StyledContainer>
       {weatherData ? (
         <Stack className="content-container">
           <Stack className="weather-container">
-            <Lottie 
+            <Lottie
               className="background-image"
               animationData={
                 dateTime?.timesOfDay === "Morning"
@@ -44,11 +41,9 @@ export default function ShowWeather() {
                 </Typography>
               </Stack>
 
-              <Stack  className="temps">
-
-                <Typography variant='h1'>12</Typography>
-                <Lottie className="weather-icon" animationData={sunnyWeather}/>
-
+              <Stack className="temps">
+                <Typography variant="h1">12&deg;C</Typography>
+                <Lottie className="weather-icon" animationData={sunnyWeather} />
               </Stack>
             </Stack>
           </Stack>
@@ -109,18 +104,17 @@ const StyledContainer = styled(Box)(({ theme }) => ({
           height: theme.spacing(8),
           alignItems: "center",
         },
-        '.temps':{
-          display:'flex',
-          flexDirection:'row',
-          justifyContent:'space-between',
-          alignItems:'center',
-          height:theme.spacing(20),
-          padding:theme.spacing(3),
-          '.weather-icon':{
-            height:'100%',
-            
-          }
-        }
+        ".temps": {
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          height: theme.spacing(20),
+          padding: theme.spacing(3),
+          ".weather-icon": {
+            height: "100%",
+          },
+        },
       },
     },
   },
