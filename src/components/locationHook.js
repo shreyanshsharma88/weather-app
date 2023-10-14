@@ -64,7 +64,7 @@ export function GetUserLocation() {
                 )}&lon=${position.coords.longitude.toFixed(2)}&appid=${apiKey}`
               );
             }
-
+ 
             if (!res.ok) {
               throw new Error("Something Went Wrong, contact the dev");
             } else {
@@ -82,8 +82,6 @@ export function GetUserLocation() {
       setLocation({ error: "Please enable geolocation in your browser." });
     }
   }, [testing]);
-  
-
 
   return { location, weatherData, dateTime };
 }

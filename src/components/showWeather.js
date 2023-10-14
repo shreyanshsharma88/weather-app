@@ -16,6 +16,8 @@ import sunnyWeather from "./lottie/Animation - sunny.json";
 export default function ShowWeather() {
   const { weatherData, dateTime } = GetUserLocation();
 
+  // console.log(dateTime.timesOfDay)
+
   return (
     <StyledContainer>
       {weatherData ? (
