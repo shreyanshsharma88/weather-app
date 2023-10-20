@@ -69,7 +69,7 @@ export function GetUserLocation() {
               throw new Error("Something Went Wrong, contact the dev");
             } else {
               const jsonData = await res.json();
-              setWeatherData(Object.entries(jsonData));
+              setWeatherData(jsonData);
             }
           } catch (error) {
             console.error(error);

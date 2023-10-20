@@ -5,6 +5,7 @@ import {
   styled,
   Typography,
 } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Lottie from "lottie-react";
 import React from "react";
 import { GetUserLocation } from "./locationHook";
@@ -12,12 +13,12 @@ import dayAnimation from "./lottie/animation_day.json";
 import eveningAnimation from "./lottie/animation_evening.json";
 import nightAnimation from "./lottie/animation_night.json";
 import sunnyWeather from "./lottie/Animation - sunny.json";
+import { useTheme } from "@mui/system";
 
 export default function ShowWeather() {
   const { weatherData, dateTime } = GetUserLocation();
-
-  // console.log(dateTime.timesOfDay)
-
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <StyledContainer>
       {weatherData ? (
@@ -44,9 +45,31 @@ export default function ShowWeather() {
               </Stack>
 
               <Stack className="temps">
-                <Typography variant="h1">12&deg;C</Typography>
+                <Stack>
+                  <Typography variant={isMobile ? "h2" : "h1"}>
+                    {(weatherData?.main?.temp / 10).toFixed(0)}&deg;C
+                  </Typography>
+                  <Typography varaint="h5" fontStyle="italic">
+                    {" "}
+                    At {weatherData?.name}
+                  </Typography>
+                </Stack>
                 <Lottie className="weather-icon" animationData={sunnyWeather} />
               </Stack>
+
+              <Stack className="temps">
+                <Stack direction='column'>
+                  <Typography varaint="h2">Humidity</Typography>
+                  <Typography variant={isMobile ? "h2" : "h3"}>{weatherData?.main?.humidity}%</Typography>
+                </Stack>
+                <Stack direction='column'>
+                  <Typography varaint="h2">Wind Speed</Typography>
+                  <Typography variant={isMobile ? "h2" : "h3"}>{weatherData?.wind?.speed}</Typography>
+
+                </Stack>
+              </Stack>
+              <Typography fontSize={ isMobile ? 16 :22} fontStyle='italic' fontWeight={900} textAlign='center'>Heyy Buddy, Good {dateTime?.timesOfDay} , Wassup!!</Typography>
+           
             </Stack>
           </Stack>
         </Stack>
