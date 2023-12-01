@@ -1,4 +1,4 @@
-import { getHours, parseISO } from "date-fns";
+import { getHours } from "date-fns";
 import { useEffect, useState } from "react";
 import { apiKey } from "../apiKey/apiKey";
 
@@ -10,18 +10,24 @@ export function GetUserLocation() {
     error: null,
   });
   const [weatherData, setWeatherData] = useState();
+  const hour = getHours(new Date());
+
   const [dateTime, setDateTime] = useState({
     time: new Date().toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
     }),
     date: new Date().toLocaleDateString(),
-    timesOfDay: "",
+    timesOfDay:
+      hour >= 5 && hour < 17
+        ? "Morning"
+        : hour >= 17 && hour < 19
+        ? "Evening"
+        : "Night",
   });
 
   useEffect(() => {
     const intervals = setInterval(() => {
-      const hour = getHours(parseISO(dateTime.date));
       setDateTime({
         ...dateTime,
         time: new Date().toLocaleTimeString([], {
@@ -39,7 +45,7 @@ export function GetUserLocation() {
     }, 10000);
 
     return () => clearInterval(intervals);
-  }, [dateTime]);
+  }, [dateTime, hour]);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -64,7 +70,7 @@ export function GetUserLocation() {
                 )}&lon=${position.coords.longitude.toFixed(2)}&appid=${apiKey}`
               );
             }
- 
+
             if (!res.ok) {
               throw new Error("Something Went Wrong, contact the dev");
             } else {
